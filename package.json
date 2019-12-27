@@ -1,7 +1,7 @@
 {
   "name": "sym-keystore",
   "description": "Create, Unlock Symverse keys",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "index.js",
   "scripts": {
     "test": "mocha $(find ./tests -name '*.spec.js') --require @babel/register --recursive -w ",

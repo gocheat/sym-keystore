@@ -1,23 +1,20 @@
 # Symverse Keystore Unlock
-
-###### npm: https://www.npmjs.com/package/sym-keystore
+Symverse blockchain private key and keystore library
 
 ## Installation
-#### Node.js
+##### Using npm:
 ```javascript
 npm i sym-keystore
-```
-
-#### Yarn
-```javascript
+or
 yarn add sym-keystore
 ```
-
-#### Used 
+##### In Node.js 
 ```javascript
+// Load SymKeystore
 import SymKeystore from 'sym-keystore'
 or
 const SymKeystore  = require('sym-keystore')
+
 ```
 
 A minified, browserified file `dist/symkeystore.js` is included for use in the browser. Including this file simply attaches the `symkeystore` object to window:
