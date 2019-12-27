@@ -59,8 +59,8 @@ const keystore = await SymKeystore.create("00020000000000110002", "1234") // inp
 const privateKey = await SymKeystore.unlock(keystore, "1234")
 // 7d6ea722afd799f5f9aaf677aadbd28d922e4e5cb655e08796763946a39732e3
 
-// privateKeyToPublicKeyHash
-const privateKey = SymKeystore.getPublicKeyHash("53818cf8fd96461ff6bcd8a6c0abbe43fe6966a3a3f4a4eef30b13d6292def74")
+// PrivateKey to PublicKeyHash
+const publicKeyHash = SymKeystore.getPublicKeyHash("53818cf8fd96461ff6bcd8a6c0abbe43fe6966a3a3f4a4eef30b13d6292def74")
 //0x67f02e157be9a4b833a3393c3880126619f99462
 
 ```
