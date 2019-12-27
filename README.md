@@ -59,8 +59,4 @@ const privateKey = await SymKeystore.unlock(keystore, "1234")
 // PrivateKey to PublicKeyHash
 const publicKeyHash = SymKeystore.getPublicKeyHash("53818cf8fd96461ff6bcd8a6c0abbe43fe6966a3a3f4a4eef30b13d6292def74")
 //0x67f02e157be9a4b833a3393c3880126619f99462
-
 ```
-
-## Contact
-<https://www.symverse.com/><br> Please contact us on this page.
