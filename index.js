@@ -16,25 +16,25 @@ const SymKeystore = {
         KEYSTORE_CREATED: 'KEYSTORE_CREATED'
     },
 
-    // /**
-    //  * keystore 생성
-    //  * @param passphrase string
-    //  * @param addData function
-    //  * @param listener function
-    //  * @return Promise
-    //  */
-    // create (passphrase, listener) {
-    //     return new Promise((res, rej) => {
-    //         this.createPrivateKey(listener)
-    //             .then(dk => {
-    //                 return this.createKeystore(dk, passphrase, listener);
-    //             }).then(keystore => {
-    //             res(keystore);
-    //         }).catch(e => {
-    //             rej(e);
-    //         });
-    //     });
-    // },
+    /**
+     * keystore 생성
+     * @param passphrase string
+     * @param addData function
+     * @param listener function
+     * @return Promise
+     */
+    create (address, passphrase, listener) {
+        return new Promise((res, rej) => {
+            this.createPrivateKey(listener)
+                .then(dk => {
+                    return this.createKeystore(dk, address, passphrase, listener);
+                }).then(keystore => {
+                res(keystore);
+            }).catch(e => {
+                rej(e);
+            });
+        });
+    },
 
     /**
      * privateKey 생성
@@ -45,28 +45,38 @@ const SymKeystore = {
         return new Promise((res, rej) => {
             keythereum.create(this.privateCreateOptions, (dk) => {
                 if (createListener) createListener(this.listener.PRIVATEKEY_CREATED);
-                res(dk.privateKey.toString('hex'));
+                res(dk);
             });
         });
     },
 
-    // /**
-    //  * keysotre 생성
-    //  * @param dk object|array
-    //  * @param passphrase object|array
-    //  * @param createListener function
-    //  * @return Promise
-    //  */
-    // createKeystore (dk, passphrase, createListener) {
-    //     return new Promise((res, rej) => {
-    //         keythereum.dump(passphrase, dk.privateKey, dk.salt, dk.iv, this.keystoreCreateOptions, (keystore) => {
-    //             if (createListener && createListener) {
-    //                 createListener(this.listener.KEYSTORE_CREATED);
-    //             }
-    //             res(keystore);
-    //         });
-    //     });
-    // },
+    /**
+     * keysotre 생성
+     * @param dk object|array
+     * @param passphrase object|array
+     * @param createListener function
+     * @return Promise
+     */
+    createKeystore (dk, address, passphrase, createListener) {
+        return new Promise((res, rej) => {
+            keythereum.dump(passphrase, dk.privateKey, dk.salt, dk.iv, this.keystoreCreateOptions, (keystore) => {
+                if (createListener && createListener) {
+                    createListener(this.listener.KEYSTORE_CREATED);
+                }
+                keystore["address"] = address
+                res(keystore);
+            });
+        });
+    },
+
+    /**
+     * PublicKey Hash 추출
+     * @param pk hex string
+     * @return string
+     */
+    getPublicKeyHash (pk) {
+        return keythereum.privateKeyToHash(pk);
+    },
 
     /**
      * 계정 잠금 해제

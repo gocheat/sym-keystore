@@ -10,17 +10,15 @@ var isBrowser = typeof process === 'undefined' || !process.nextTick || Boolean(p
 
 var sjcl = require('sjcl');
 var uuid = require('uuid');
-const scrypt = require('scrypt')
 var secp256k1 = require('secp256k1/elliptic');
-const { SHA3 } = require('sha3');
-const sha3 = new SHA3(256);
+const SHA = require('js-sha3');
 
 function isFunction (f) {
     return typeof f === 'function';
 }
 
 function sha3_256(buffer) {
-    return sha3.update(buffer).digest();
+    return SHA.sha3_256(buffer);
 }
 
 
@@ -143,9 +141,9 @@ module.exports = {
     },
 
     /**
-     * Derive Ethereum address from private key.
+     * Derive Symverse public key Hash from private key.
      * @param {Buffer|string} privateKey ECDSA private key.
-     * @return {string} Hex-encoded Ethereum address.
+     * @return {string} Hex-encoded Symverse public key Hash.
      */
     privateKeyToAddress: function (privateKey) {
         var privateKeyBuffer, publicKey;
@@ -158,6 +156,24 @@ module.exports = {
         }
         publicKey = secp256k1.publicKeyCreate(privateKeyBuffer, false).slice(1);
         return "0x" + sha3_256(publicKey).slice(-20).toString("hex");
+    },
+
+    /**
+     * Derive Symverse public key Hash from private key.
+     * @param {Buffer|string} privateKey ECDSA private key.
+     * @return {string} Hex-encoded Symverse public key Hash.
+     */
+    privateKeyToHash: function (privateKey) {
+        var privateKeyBuffer, publicKey;
+        privateKeyBuffer = this.str2buf(privateKey);
+        if (privateKeyBuffer.length < 32) {
+            privateKeyBuffer = Buffer.concat([
+                Buffer.alloc(32 - privateKeyBuffer.length, 0),
+                privateKeyBuffer
+            ]);
+        }
+        publicKey = secp256k1.publicKeyCreate(privateKeyBuffer, false).slice(1);
+        return "0x" + sha3_256(publicKey).slice(-40).toString("hex");
     },
 
     /**
@@ -183,7 +199,7 @@ module.exports = {
      */
     deriveKeyUsingScryptInNode: function (password, salt, options, cb) {
         if (!isFunction(cb)) return this.deriveKeyUsingScryptInBrowser(password, salt, options);
-        scrypt.hash(password, {
+        require("scrypt").hash(password, {
             N: options.kdfparams.n || this.constants.scrypt.n,
             r: options.kdfparams.r || this.constants.scrypt.r,
             p: options.kdfparams.p || this.constants.scrypt.p
@@ -249,7 +265,6 @@ module.exports = {
             if (!this.browser) return this.deriveKeyUsingScryptInNode(password, salt, options, cb);
             return this.deriveKeyUsingScryptInBrowser(password, salt, options, cb);
         }
-
         // use default key derivation function (PBKDF2)
         prf = options.kdfparams.prf || this.constants.pbkdf2.prf;
         if (prf === "hmac-sha256") prf = "sha256";

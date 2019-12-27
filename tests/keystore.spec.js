@@ -1,16 +1,21 @@
 /**
  * keystore.spec.js
  */
-const SymKeystore =  require('../index.js');
+const SymKeystore =  require("../index.js");
 
 describe("Keystore Test", function () {
-    it('Create privateKey', async() => {
+    it("Create privateKey", async() => {
         const privateKey = await SymKeystore.createPrivateKey()
-        console.log(privateKey)
+        console.log(privateKey.privateKey.toString("hex"))
     });
-    it('Unlock Test', async() => {
-        const temp = {"address":"00021000000000010002","crypto":{"cipher":"aes-128-ctr","ciphertext":"ef9fbb32eb35be8a5cec80966adae0e702b95684789111ea9bb4b8baf3f6764b","cipherparams":{"iv":"b20ebf80c8dee5774c7a43daf9f53c90"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"8cc972a0167c5e0eb790ecde0fbb25195e9d86f8efb5bc30f04cec3f40d7e345"},"mac":"ebc768cbae6bb9e2f6aedf4aff7e38e04b68763cf958af9b42f055abaea11efc"},"id":"5a98b468-6f3d-4375-a9b7-033d6cba996e","version":3}
-        const pk = await SymKeystore.unlock(temp, "1234")
-        console.log(pk.toString('hex'))
+    it("Create keystore & unlock Test", async() => {
+        const keystore = await SymKeystore.create("00020000000000110002", "1234")
+        const pk = await SymKeystore.unlock(keystore, "1234")
+        console.log(keystore)
+        console.log(pk.toString("hex"))
     });
+    it("get publickey hash", async() => {
+        const publicKeyHash = SymKeystore.getPublicKeyHash("53818cf8fd96461ff6bcd8a6c0abbe43fe6966a3a3f4a4eef30b13d6292def74")
+        console.log(publicKeyHash)
+   });
 });

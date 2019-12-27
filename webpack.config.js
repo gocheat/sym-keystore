@@ -4,7 +4,7 @@ const env = process.env.WEBPACK_ENV;
 const isDev = process.env.NODE_ENV !== 'production';
 
 
-var libraryName = 'symkeystore';
+var libraryName = 'sym-keystore';
 var plugins = [], outputFile;
 
 if (env === 'build' && !isDev) {
