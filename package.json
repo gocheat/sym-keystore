@@ -1,9 +1,17 @@
 {
   "name": "sym-keystore",
-  "description": "Create, Unlock Symverse keys",
-  "version": "1.0.2",
+  "description": "Symverse block keystore tool",
+  "version": "1.0.3",
   "main": "index.js",
-  "keywords": ["symverse", "blockchain", "keystore", "symkeystore", "symjs", "symid", "symverse keystore"],
+  "keywords": [
+    "symverse",
+    "blockchain",
+    "keystore",
+    "symkeystore",
+    "symjs",
+    "symid",
+    "symverse keystore"
+  ],
   "scripts": {
     "test": "mocha $(find ./tests -name '*.spec.js') --require @babel/register --recursive -w ",
     "build": "WEBPACK_ENV=build webpack --production",
